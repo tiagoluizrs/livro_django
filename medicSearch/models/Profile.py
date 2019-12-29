@@ -7,8 +7,10 @@ class Profile(models.Model):
     birthday = models.DateField(default=None, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    specialties = models.ManyToManyField(Speciality, null=True, related_name='specialties')
-    addresses = models.ManyToManyField(Address, null=True, related_name='addresses')
+    image = models.ImageField(null=True, blank=True)
+    specialties = models.ManyToManyField(Speciality, blank=True, related_name='specialties', verbose_name='Especialidades', help_text="Este campo é destinado aos usuários de perfil médico.")
+    addresses = models.ManyToManyField(Address, blank=True, related_name='addresses', verbose_name='Endereços', help_text="Este campo é destinado aos usuários de perfil médico.")
+
 
     def __str__(self):
         return '{}'.format(self.user.username)
