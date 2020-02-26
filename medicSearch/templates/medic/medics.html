@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Médicos{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{% static 'css/medic.css' %}">{% endblock %}
+{% block content %}
+<div id="content">
+    <div class="container">
+        <div class="alert alert-info">Foram encontrados: {{ medics | length }} medico(s)</div>
+        {% if request.GET.msg %}
+        <div class="alert alert-{{request.GET.type}}">{{ request.GET.msg }}</div>
+        {% endif %}
+        <div class="row">
+        {% for medic in medics %}
+            <div class="col-xs-12 col-md-3 col-lg-3">
+                <div class="card mb-4">
+                {% if medic.image %}
+                    <div class="image-circle" style="background-image: url('/media/{{medic.image}}');"></div>
+                {% else %}
+                    <div class="image-circle no-image"></div>
+                {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{medic.user.get_full_name}}</h5>
+                        <h6>Média: {{medic.show_scoring_average}} <i class="fa fa-star"></i></h6>
+                        <ul class="specialties">
+                            {% for speciality in medic.specialties.all %}
+                            <li>{{speciality}}</li>
+                            {% endfor %}
+                        </ul>
+                        <div class="address mb-2">
+                            {% if medic.addresses.first %}
+                                {{medic.addresses.first}} ...
+                            {% else %}
+                                Nenhum endereço.
+                            {% endif %}
+                        </div>
+                        <a href="/profile/{{medic.user.id}}" class="btn btn-primary btn-card">Ver médico</a>
+                        {% if user.is_authenticated %}
+                        <form method="POST" action="/medic/favorite">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{medic.user.id}}" name="id">
+                            <input type="hidden" value="{{request.GET.page}}" name="page">
+                            <input type="hidden" value="{{request.GET.name}}" name="name">
+                            <input type="hidden" value="{{request.GET.speciality}}" name="speciality">
+                            <input type="hidden" value="{{request.GET.neighborhood}}" name="neighborhood">
+                            <input type="hidden" value="{{request.GET.city}}" name="city">
+                            <input type="hidden" value="{{request.GET.state}}" name="state">
+                            <button type="submit" class="btn btn-danger btn-card"><i class="fa fa-heart"></i> Favoritos</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+        <div class="row">
+            <nav aria-label="Page navigation" class="navigation">
+              <ul class="pagination">
+                {% if medics.has_previous %}
+                  <li class="page-item"><a class="page-link" href="?page=1&{{ parameters }}">&laquo; Primeiro</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ medics.previous_page_number }}&{{ parameters }}">Anterior</a></li>
+                {% endif %}
+                  <li class="page-item"><a class="page-link" href="#">Página {{ medics.number }} de {{ medics.paginator.num_pages }}.</a></li>
+                {% if medics.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ medics.next_page_number }}&{{ parameters }}">Próximo</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ medics.paginator.num_pages }}&{{ parameters }}">Último &raquo;</a></li>
+                {% endif %}
+              </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+{% endblock %}

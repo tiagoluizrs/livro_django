@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    {% block styles %}{% endblock %}
+    <title>Busca Doutor - {% block title %}{% endblock %}</title>
+  </head>
+  <body>
+    <header>
+        <nav class="navbar justify-content-end navbar-expand-lg">
+            <ul class="nav">
+                <li class="nav-item"><a class="nav-link" href="/"><i class="fa fa-home"></i> Home</a></li>
+              {% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-heart"></i> Favoritos</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-user"></i> Perfil</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-sign-out"></i> Sair</a></li>
+              {% else %}
+                <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-sign-in"></i> Entrar</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-edit"></i> Registrar</a></li>
+              {% endif %}
+            </ul>
+        </nav>
+    </header>
+    {% block content %}{% endblock %}
+    <footer class="page-footer font-small blue">
+      <div class="footer-copyright text-center py-3">©2020 Copyright:
+        <a href="https://www.casadocodigo.com.br/"> Casadocodigo.com.br</a>
+      </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

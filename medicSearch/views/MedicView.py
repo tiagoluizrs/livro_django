@@ -1,5 +1,7 @@
-from django.http import HttpResponse
-from medicSearch.models import Profile, Speciality
+from django.shortcuts import render, redirect
+from medicSearch.models import Profile
+from django.db.models import Q
+from django.core.paginator import Paginator
 
 def list_medics_view(request):
     name = request.GET.get("name")
@@ -8,28 +10,71 @@ def list_medics_view(request):
     city = request.GET.get("city")
     state = request.GET.get("state")
 
-    medics = Profile.objects
+    medics = Profile.objects.filter(role=2)
     if name is not None:
-        medics = medics.filter(user__first_name__contains=name)
+        medics = medics.filter(Q(user__first_name__contains=name) | Q(user__username__contains=name))
     if speciality is not None:
-        medics = medics.filter(specialties__name__contains=speciality)
+        medics = medics.filter(specialties__id=speciality)
 
     if neighborhood is not None:
-        medics = medics.filter(addresses__neighborhood=neighborhood)
+        medics = medics.filter(addresses__neighborhood__id=neighborhood)
     else:
         if city is not None:
-            medics = medics.filter(addresses__neighborhood__city=city)
+            medics = medics.filter(addresses__neighborhood__city__id=city)
         elif state is not None:
-            medics = medics.filter(addresses__neighborhood__city__state=state)
+            medics = medics.filter(addresses__neighborhood__city__state__id=state)
 
-    print(medics.order_by('user__date_joined').all())
-    return HttpResponse('Listagem de 1 ou mais médicos')
+    if len(medics) > 0:
+        paginator = Paginator(medics, 8)
+        page = request.GET.get('page')
+        medics = paginator.get_page(page)
 
-def list_medic_view(request, id):
-    medics = Profile.objects.filter(role=2, id=id).first()
+    get_copy = request.GET.copy()
+    parameters = get_copy.pop('page', True) and get_copy.urlencode()
+
+    context = {
+        'medics': medics,
+        'parameters': parameters
+    }
+
+    return render(request, template_name='medic/medics.html', context=context, status=200)
+
+def add_favorite_view(request):
+    page = request.POST.get("page")
+    name = request.POST.get("name")
+    speciality = request.POST.get("speciality")
+    neighborhood = request.POST.get("neighborhood")
+    city = request.POST.get("city")
+    state = request.POST.get("state")
+    id = request.POST.get("id")
+
     try:
-        profile = Profile.objects.filter(user__id=3).first()
-        profile.user.delete()
+        profile = Profile.objects.filter(user=request.user).first()
+        medic = Profile.objects.filter(user__id=id).first()
+        profile.favorites.add(medic.user)
+        profile.save()
+        msg = "Favorito adicionado com sucesso."
+        _type = "success"
     except Exception as e:
-        print("Um erro ocorreu ao deletar um usuário. Descrição %s" % e)
-    return HttpResponse('Listagem perfil de 1 médico')
+        print("Erro %s" % e)
+        msg = "Um erro ocorreu ao salvar o médico nos favoritos."
+        _type = "danger"
+
+    if page:
+        arguments = "?page=%s" % (page)
+    else:
+        arguments = "?page=1"
+    if name:
+        arguments += "&name=%s" % name
+    if speciality:
+        arguments += "&specinality=%s" % speciality
+    if neighborhood:
+        arguments += "&neighborhood=%s" % neighborhood
+    if city:
+        arguments += "&city=%s" % city
+    if state:
+        arguments += "&state=%s" % state
+
+    arguments += "&msg=%s&type=%s" % (msg, _type)
+
+    return redirect(to='/medic/%s' % arguments)

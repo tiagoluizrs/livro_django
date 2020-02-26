@@ -1,4 +1,5 @@
 from medicSearch.models import *
+from django.db.models import Sum, Count
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -8,6 +9,7 @@ class Profile(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(null=True, blank=True)
+    favorites = models.ManyToManyField(User, blank=True, related_name='favorites', verbose_name='Favoritos', help_text="Este campo é destinado aos usuários de perfil paciente.")
     specialties = models.ManyToManyField(Speciality, blank=True, related_name='specialties', verbose_name='Especialidades', help_text="Este campo é destinado aos usuários de perfil médico.")
     addresses = models.ManyToManyField(Address, blank=True, related_name='addresses', verbose_name='Endereços', help_text="Este campo é destinado aos usuários de perfil médico.")
 
@@ -30,3 +32,11 @@ class Profile(models.Model):
         except:
             pass
 
+    def show_scoring_average(self):
+        from .Rating import Rating
+        try:
+            ratings = Rating.objects.filter(user=self.user).aggregate(Sum('value'), Count('user'))
+            scoring_average = ratings['value__sum'] / ratings['user__count']
+            return scoring_average
+        except:
+            return 0

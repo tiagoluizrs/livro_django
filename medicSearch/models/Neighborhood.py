@@ -1,7 +1,7 @@
 from medicSearch.models import *
 
 class Neighborhood(models.Model):
-    city = models.ForeignKey(City, blank="False", related_name='cidade', on_delete=models.CASCADE)
+    city = models.ForeignKey(City, blank="False", related_name='city', on_delete=models.CASCADE)
     name = models.CharField(null=False, max_length=20)
     status = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)

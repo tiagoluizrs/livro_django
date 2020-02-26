@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Médicos{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{% static 'css/profile.css' %}">{% endblock %}
+{% block content %}
+<div id="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12 col-md-3" id="profile-area">
+                <div id="image-profile" style="background-image: url('/media/{{profile.image}}');"></div>
+                <ul>
+                    <li>{{profile.user.get_full_name}}</li>
+                    <li>{{profile.user.username}}</li>
+                    <li>{{profile.user.email}}</li>
+                    <li>{{profile.birthday}}</li>
+                    <li>{{profile.addresses.first}}</li>
+                </ul>
+            </div>
+            {% if profile.role == 1 or profile.role == 3 %}
+            <div class="col-xs-12 col-md-9" id="favorites-area"></div>
+            {% else %}
+            <div class="col-xs-12 col-md-9" id="ratings-area"></div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

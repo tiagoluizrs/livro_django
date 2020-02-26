@@ -1,7 +1,7 @@
 from django.urls import path
-from medicSearch.views.MedicView import list_medics_view, list_medic_view
+from medicSearch.views.MedicView import list_medics_view, add_favorite_view
 
 urlpatterns = [
     path("", list_medics_view),
-    path("<int:id>", list_medic_view),
+    path("favorite", add_favorite_view),
 ]

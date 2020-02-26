@@ -121,3 +121,4 @@ CKEDITOR_CONFIGS = {
         'height': 300,
     },
 }
+
