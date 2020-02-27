@@ -1,3 +1,27 @@
 #content{
     min-height: calc(100vh - 112px);
 }
+.image-circle{
+    width: 150px;
+    height: 150px;
+    border-radius: 100%;
+    margin: 10px auto;
+    background-size: contain;
+    background-color: #ccc;
+}
+.btn-card {
+    width: 49.5%;
+    float: left;
+    font-size: 0.9em;
+}
+.btn-card:last-child{
+    margin-left: 1%;
+}
+.specialties{
+    padding: 0;
+    list-style: none;
+    min-height: 46px;
+}
+.navigation{
+    margin: 0 auto;
+}

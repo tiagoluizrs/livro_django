@@ -11,15 +11,22 @@ def list_profile_view(request, id=None):
     elif not request.user.is_authenticated:
         return redirect(to='/')
 
-    favorites = profile.favorites.all()
+    favorites = profile.show_favorites()
     if len(favorites) > 0:
         paginator = Paginator(favorites, 8)
         page = request.GET.get('page')
         favorites = paginator.get_page(page)
 
+    ratings = profile.show_ratings()
+    if len(ratings) > 0:
+        paginator = Paginator(ratings, 8)
+        page = request.GET.get('page')
+        ratings = paginator.get_page(page)
+
     context = {
         'profile': profile,
-        'favorites': favorites
+        'favorites': favorites,
+        'ratings': ratings
     }
 
     return render(request, template_name='profile/profile.html', context=context, status=200)

@@ -6,20 +6,138 @@
 <div id="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-xs-12 col-md-3" id="profile-area">
+            <div class="col-xs-12 col-md-2" id="profile-area">
                 <div id="image-profile" style="background-image: url('/media/{{profile.image}}');"></div>
-                <ul>
-                    <li>{{profile.user.get_full_name}}</li>
-                    <li>{{profile.user.username}}</li>
-                    <li>{{profile.user.email}}</li>
-                    <li>{{profile.birthday}}</li>
-                    <li>{{profile.addresses.first}}</li>
+                {% if profile.role == 1 %}
+                <p class="badge badge-primary text-center" id="badge-role"><i class="fa fa-building"></i> Administrador</p>
+                {% elif profile.role == 2 %}
+                <p class="badge badge-primary text-center" id="badge-role"><i class="fa fa-user-md"></i> Médico</p>
+                {% else %}
+                <p class="badge badge-primary text-center" id="badge-role"><i class="fa fa-user"></i> Paciente</p>
+                {% endif %}
+
+                {% if profile.user.id == request.user.id %}
+                <a id="icon-edit" href="/profile/edit"><i class="fa fa-edit"></i></a>
+                {% endif %}
+                <ul class="list-group">
+                    <li class="list-group-item">Nome: {{profile.user.get_full_name | default:"Sem nome"}}</li>
+                    <li class="list-group-item">Usuário: {{profile.user.username | default:"Sem usuário"}}</li>
+                    <li class="list-group-item">E-mail: {{profile.user.email | default:"Sem e-mail"}}</li>
+                    <li class="list-group-item">Nascimento: {{profile.birthday | date:'d/m/Y' | default:"Sem data"}}</li>
+                    <li class="list-group-item">Especialidades: {{ profile.specialties.all | join:", " }}</li>
                 </ul>
             </div>
             {% if profile.role == 1 or profile.role == 3 %}
-            <div class="col-xs-12 col-md-9" id="favorites-area"></div>
+            <div class="col-xs-12 col-md-10" id="favorites-area">
+                <div class="alert alert-info">Total de favoritos: {{favorites | length}}</div>
+                {% if request.GET.msg %}
+                <div class="alert alert-{{request.GET.type}}">{{ request.GET.msg }}</div>
+                {% endif %}
+                <div class="row">
+                    {% for favorite in favorites %}
+                    <div class="col-xs-12 col-md-3 col-lg-3">
+                        <div class="card mb-4">
+                            <div class="image-circle" style="background-image: url('/media/{{favorite.image}}');"></div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{favorite.user.get_full_name}}</h5>
+                                <h6>Média: {{favorite.show_scoring_average}} <i class="fa fa-star"></i></h6>
+                                <ul class="specialties">
+                                    {% for speciality in favorite.specialties.all %}
+                                    <li>{{speciality}}</li>
+                                    {% endfor %}
+                                </ul>
+                                <div class="address mb-2">
+                                    {{favorite.addresses.first.address | default:"Nenhum endereço." | slice:":15"}}...
+                                </div>
+                                <a href="/profile/{{favorite.id}}" class="btn btn-primary btn-card">Ver médico</a>
+                                {% if user.is_authenticated %}
+                                <form method="POST" action="/medic/favorite/remove">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="{{favorite.id}}" name="id">
+                                    <input type="hidden" value="{{request.GET.page}}" name="page">
+                                    <button type="submit" class="btn btn-danger btn-card"><i class="fa fa-heart"></i> Remover</button>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="row">
+                    <nav aria-label="Page navigation" class="navigation">
+                      <ul class="pagination">
+                        {% if favorites.has_previous %}
+                          <li class="page-item"><a class="page-link" href="?page=1">&laquo; Primeiro</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{ favorites.previous_page_number }}">Anterior</a></li>
+                        {% endif %}
+                          <li class="page-item"><a class="page-link" href="#">Página {{ favorites.number }} de {{ favorites.paginator.num_pages }}.</a></li>
+                        {% if favorites.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{ favorites.next_page_number }}">Próximo</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{ favorites.paginator.num_pages }}">Último &raquo;</a></li>
+                        {% endif %}
+                      </ul>
+                    </nav>
+                </div>
+            </div>
             {% else %}
-            <div class="col-xs-12 col-md-9" id="ratings-area"></div>
+            <div class="col-xs-12 col-md-4" id="addresses-area">
+                <div class="alert alert-info">Total de endereços: {{profile.addresses.all | length}}</div>
+                <div class="row">
+                    {% for address in profile.addresses.all %}
+                    <div class="col-xs-12 col-md-12">
+                        <div class="card mb-3">
+                          <div class="card-body">
+                            <h5 class="card-title">{{address.address}}, {{address.neighborhood.name}}, {{address.neighborhood.city}}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Telefones: {{address.phone}}</h6>
+                            <ul id="days">
+                                <li>Dias de funcionamento:</li>
+                                {% for day in address.days_week.all %}
+                                <li>- {{day.name}} | {{address.opening_time}} - {{address.closing_time}}</li>
+                                {% endfor %}
+                            </ul>
+                            {% if profile.user.id == request.user.id %}
+                            <a href="/address/{{address.id}}" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+                            {% endif %}
+                          </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-6" id="ratings-area">
+                <div class="alert alert-info">Total de avaliações: {{ratings | length}}</div>
+                <div class="row mb-4">
+                    <div class="col-xs-12 col-md-12">
+                        <ul class="list-group">
+                          {% for rating in ratings %}
+                            <li href="#" class="list-group-item list-group-item-action">
+                                <div class="content d-flex justify-content-between">
+                                  <h5 class="mb-1">{{rating.user.get_full_name}}</h5>
+                                  <small>{{rating.created_at}}</small>
+                                </div>
+                                {{rating.opinion | safe}}
+                                <small>{{rating.value}}</small>
+                              </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <nav aria-label="Page navigation" class="navigation">
+                      <ul class="pagination">
+                        {% if ratings.has_previous %}
+                          <li class="page-item"><a class="page-link" href="?page=1">&laquo; Primeiro</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{ ratings.previous_page_number }}">Anterior</a></li>
+                        {% endif %}
+                          <li class="page-item"><a class="page-link" href="#">Página {{ ratings.number }} de {{ ratings.paginator.num_pages }}.</a></li>
+                        {% if ratings.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{ ratings.next_page_number }}">Próximo</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{ ratings.paginator.num_pages }}">Último &raquo;</a></li>
+                        {% endif %}
+                      </ul>
+                    </nav>
+                </div>
+            </div>
             {% endif %}
         </div>
     </div>

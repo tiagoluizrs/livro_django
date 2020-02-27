@@ -13,7 +13,6 @@ class Profile(models.Model):
     specialties = models.ManyToManyField(Speciality, blank=True, related_name='specialties', verbose_name='Especialidades', help_text="Este campo é destinado aos usuários de perfil médico.")
     addresses = models.ManyToManyField(Address, blank=True, related_name='addresses', verbose_name='Endereços', help_text="Este campo é destinado aos usuários de perfil médico.")
 
-
     def __str__(self):
         return '{}'.format(self.user.username)
 
@@ -35,8 +34,16 @@ class Profile(models.Model):
     def show_scoring_average(self):
         from .Rating import Rating
         try:
-            ratings = Rating.objects.filter(user=self.user).aggregate(Sum('value'), Count('user'))
+            ratings = Rating.objects.filter(user_rated=self.user).aggregate(Sum('value'), Count('user'))
             scoring_average = ratings['value__sum'] / ratings['user__count']
             return scoring_average
         except:
             return 0
+
+    def show_favorites(self):
+        ids = [result.id for result in self.favorites.all()]
+        return Profile.objects.filter(user__id__in=ids)
+
+    def show_ratings(self):
+        from .Rating import Rating
+        return Rating.objects.filter(user_rated=self.user)

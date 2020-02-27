@@ -9,6 +9,7 @@ class Address(models.Model):
     opening_time = models.TimeField()
     closing_time = models.TimeField()
     days_week = models.ManyToManyField(DayWeek, blank=True, related_name='days_week')
+    phone = models.CharField(null=True, blank=True, max_length=50)
     status = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

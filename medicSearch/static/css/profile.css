@@ -2,4 +2,40 @@
     width: 150px;
     height: 150px;
     background-size: contain;
+    margin: 10px auto;
+    background-color: #ccc;
+    border-radius: 100%;
+}
+
+#badge-role{
+    width: 100%;
+    padding: 10px 0;
+    font-size: 1em;
+    float: left;
+    border-radius: 0;
+}
+
+#icon-edit{
+    width: 35.56px;
+    height: 35.56px;
+    border-radius: 0;
+    float: left;
+    text-align: center;
+    line-height: 35.56px;
+    color: #fff;
+    font-weight: bold;
+    background-color: #157af6;
+    position: absolute;
+    right: 20px;
+}
+
+ul.list-group{
+    float: left;
+    width: 100%;
+}
+
+ul#days{
+    list-style: none;
+    padding: 0;
+    width: 100%;
 }

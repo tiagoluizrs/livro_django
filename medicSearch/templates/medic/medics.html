@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}Médicos{% endblock %}
-{% block styles %}<link rel="stylesheet" href="{% static 'css/medic.css' %}">{% endblock %}
 {% block content %}
 <div id="content">
     <div class="container">
@@ -13,11 +12,7 @@
         {% for medic in medics %}
             <div class="col-xs-12 col-md-3 col-lg-3">
                 <div class="card mb-4">
-                {% if medic.image %}
                     <div class="image-circle" style="background-image: url('/media/{{medic.image}}');"></div>
-                {% else %}
-                    <div class="image-circle no-image"></div>
-                {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{medic.user.get_full_name}}</h5>
                         <h6>Média: {{medic.show_scoring_average}} <i class="fa fa-star"></i></h6>
@@ -27,11 +22,7 @@
                             {% endfor %}
                         </ul>
                         <div class="address mb-2">
-                            {% if medic.addresses.first %}
-                                {{medic.addresses.first}} ...
-                            {% else %}
-                                Nenhum endereço.
-                            {% endif %}
+                            {{medic.addresses.first.address | default:"Nenhum endereço." | slice:":15"}}
                         </div>
                         <a href="/profile/{{medic.user.id}}" class="btn btn-primary btn-card">Ver médico</a>
                         {% if user.is_authenticated %}

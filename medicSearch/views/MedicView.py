@@ -78,3 +78,29 @@ def add_favorite_view(request):
     arguments += "&msg=%s&type=%s" % (msg, _type)
 
     return redirect(to='/medic/%s' % arguments)
+
+def remove_favorite_view(request):
+    page = request.POST.get("page")
+    id = request.POST.get("id")
+
+    try:
+        profile = Profile.objects.filter(user=request.user).first()
+        medic = Profile.objects.filter(user__id=id).first()
+        profile.favorites.remove(medic.user)
+        profile.save()
+        msg = "Favorito removido com sucesso."
+        _type = "success"
+    except Exception as e:
+        print("Erro %s" % e)
+        msg = "Um erro ocorreu ao remover o médico nos favoritos."
+        _type = "danger"
+
+
+    if page:
+        arguments = "?page=%s" % (page)
+    else:
+        arguments = "?page=1"
+
+    arguments += "&msg=%s&type=%s" % (msg, _type)
+
+    return redirect(to='/profile/%s' % arguments)
