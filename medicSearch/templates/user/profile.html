@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Perfil{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{% static 'css/home.css' %}">{% endblock %}
+{% block content %}
+<div id="content">
+    <div class="container-fluid">
+        <div class="row">
+            <form class="col-md-6 col-lg-6 offset-md-3 offset-lg-3" method="POST" action="" enctype="multipart/form-data">
+                {% if message is not None %}
+                <div class="alert alert-{{ message.type }}">{{ message.text }}</div>
+                {% endif %}
+                <div class="row">
+                    {% csrf_token %}
+                    {% for f in userForm %}
+                        {% if not f.is_hidden %}
+                        <div class="form-group col-md-6">
+                            {{ f.label }}
+                            {{ f }}
+                            {% for error in f.errors %}
+                            <div class="invalid-feedback" style="display: initial;">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                            {{ f }}
+                        {% endif %}
+                    {% endfor %}
+                    {% for f in profileForm %}
+                        {% if not f.is_hidden %}
+                        <div class="form-group col-md-6">
+                            {{ f.label }}
+                            {{ f }}
+                            {% for error in f.errors %}
+                            <div class="invalid-feedback" style="display: initial;">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                            {{ f }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
