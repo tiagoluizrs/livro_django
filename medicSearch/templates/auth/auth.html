@@ -7,12 +7,12 @@
     <div class="container-fluid">
         <div class="row">
             <form class="col-md-4 col-lg-4 offset-md-4 offset-lg-4" method="POST" action="">
-                <h3 class="text-center">Login</h3>
+                <h3 class="text-center">{{title}}</h3>
                 {% if message is not None %}
                 <div class="alert alert-{{ message.type }}">{{ message.text }}</div>
                 {% endif %}
                 {% csrf_token %}
-                {% for f in loginForm %}
+                {% for f in form %}
                     <div class="form-group">
                         {{ f.label }}
                         {{ f }}
@@ -21,7 +21,8 @@
                         {% endfor %}
                     </div>
                 {% endfor %}
-                <button type="submit" class="btn btn-primary">Entrar</button>
+                <a href="{{link_href}}" class="text-center mt-2 mb-2" style="display: block;">{{link_text}}</a>
+                <button type="submit" class="btn btn-primary">{{button_text}}</button>
             </form>
         </div>
     </div>

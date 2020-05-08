@@ -17,7 +17,7 @@
                 {% endif %}
 
                 {% if profile.user.id == request.user.id %}
-                <a id="icon-edit" href="/profile/edit"><i class="fa fa-edit"></i></a>
+                <a id="icon-edit" href="/my-profile"><i class="fa fa-edit"></i></a>
                 {% endif %}
                 <ul class="list-group">
                     <li class="list-group-item">Nome: {{profile.user.get_full_name | default:"Sem nome"}}</li>
@@ -25,6 +25,11 @@
                     <li class="list-group-item">E-mail: {{profile.user.email | default:"Sem e-mail"}}</li>
                     <li class="list-group-item">Nascimento: {{profile.birthday | date:'d/m/Y' | default:"Sem data"}}</li>
                     <li class="list-group-item">Especialidades: {{ profile.specialties.all | join:", " }}</li>
+                    {% if profile.role == 2 and request.user.is_authenticated %}
+                    <li class="list-group-item">
+                        <a class="btn btn-warning" href="/medic/rating/{{ profile.user.id }}">Avaliar <i class="fa fa-star"></i></a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
             {% if profile.role == 1 or profile.role == 3 %}
@@ -115,7 +120,7 @@
                                   <h5 class="mb-1">{{rating.user.get_full_name}}</h5>
                                   <small>{{rating.created_at}}</small>
                                 </div>
-                                {{rating.opinion | safe}}
+                                {{rating.opinion}}
                                 <small>{{rating.value}}</small>
                               </li>
                             {% endfor %}

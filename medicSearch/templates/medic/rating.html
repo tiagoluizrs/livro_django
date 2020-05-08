@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Perfil{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{% static 'css/home.css' %}">{% endblock %}
+{% block content %}
+<div id="content">
+    <div class="container-fluid">
+        <div class="row">
+            <form class="col-md-4 col-lg-4 offset-md-4 offset-lg-4" method="POST" action="">
+                <h3 class="text-center">Avaliação do médico {{ medic.user.get_full_name }}</h3>
+                {% if message is not None %}
+                <div class="alert alert-{{ message.type }}">{{ message.text }}</div>
+                {% endif %}
+                {% csrf_token %}
+                {% for f in ratingForm %}
+                    {% if not f.is_hidden %}
+                    <div class="form-group">
+                        {{ f.label }}
+                        {{ f }}
+                        {% for error in f.errors %}
+                        <div class="invalid-feedback" style="display: initial;">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                        {{ f }}
+                    {% endif %}
+                {% endfor %}
+                <a href="/profile/{{ medic.user.id }}" class="text-center mt-2 mb-2" style="display: block;">Voltar para o perfil do médico</a>
+                <button type="submit" class="btn btn-primary">Avaliar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
