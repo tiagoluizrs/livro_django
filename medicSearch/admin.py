@@ -3,8 +3,8 @@ from .models import *
 
 class ProfileAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
-    list_display = ('user', 'status', 'role','specialtiesList', 'addressesList',)
-    list_filter = ('status', 'role',)
+    list_display = ('user', 'role','specialtiesList', 'addressesList',)
+    list_filter = ('role',)
     search_fields = ['user__username']
     readonly_fields = ('created_at',)
     empty_value_display = '--vazio--'

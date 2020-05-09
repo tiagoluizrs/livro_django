@@ -1,7 +1,6 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-# Altere a linha a seguir para importar a model Rating
 from medicSearch.models import Profile, Rating
-# Adicione a linha a seguir para importar a classe de form MedicRatingForm
 from medicSearch.forms.MedicForm import MedicRatingForm
 from django.db.models import Q
 from django.core.paginator import Paginator
@@ -108,6 +107,7 @@ def remove_favorite_view(request):
 
     return redirect(to='/profile/%s' % arguments)
 
+@login_required
 def rate_medic(request, medic_id=None):
     medic = Profile.objects.filter(user__id=medic_id).first()
     rating = Rating.objects.filter(user=request.user, user_rated=medic.user).first()
