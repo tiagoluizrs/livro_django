@@ -35,7 +35,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'medicSearch',
-    'ckeditor'
+    'ckeditor',
+    'social_django'
+]
+
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 MIDDLEWARE = [
@@ -61,6 +68,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends', # Adicione isso
+                'social_django.context_processors.login_redirect',  # Adicione isso
             ],
         },
     },
@@ -123,5 +132,22 @@ CKEDITOR_CONFIGS = {
 }
 
 LOGIN_URL = '/login'
+LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login'
-LOGIN_REDIRECT_URL = '/login'
+LOGOUT_URL = '/logout'
+
+SOCIAL_AUTH_FACEBOOK_KEY = "658579194688492" # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = "e0c984e141702e84c645e6e2161bf06e" # App Secret
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', 'user_link'] # add this
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {       # add this
+  'fields': 'id, name, email, picture.type(large), link'
+}
+SOCIAL_AUTH_FACEBOOK_EXTRA_DATA = [                 # add this
+    ('name', 'name'),
+    ('email', 'email'),
+    ('picture', 'picture'),
+    ('link', 'profile_url'),
+]
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '259842515936-5al8c0dku6853nbbpi063scbi9pu2q7q.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'ft_duQZtVx9utcSjNawfJSvk'

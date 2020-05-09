@@ -23,6 +23,11 @@
                 {% endfor %}
                 <a href="{{link_href}}" class="text-center mt-2 mb-2" style="display: block;">{{link_text}}</a>
                 <button type="submit" class="btn btn-primary">{{button_text}}</button>
+                <p class="text-center mt-2 mb-2" style="display: block;">Ou</p>
+                <div class="social-container">
+                    <a class="btn" id="facebook" href="{% url 'social:begin' 'facebook' %}"><i class="fa fa-facebook-f"></i></a>
+                    <a class="btn" id="google" href="{% url 'social:begin' 'google-oauth2' %}"><i class="fa fa-google"></i></a>
+                </div>
             </form>
         </div>
     </div>
