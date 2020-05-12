@@ -7,6 +7,7 @@ class Profile(models.Model):
     birthday = models.DateField(default=None, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    token = models.CharField(max_length=256, null=True, blank=True)
     image = models.ImageField(null=True, blank=True)
     favorites = models.ManyToManyField(User, blank=True, related_name='favorites', verbose_name='Favoritos', help_text="Este campo é destinado aos usuários de perfil paciente.")
     specialties = models.ManyToManyField(Speciality, blank=True, related_name='specialties', verbose_name='Especialidades', help_text="Este campo é destinado aos usuários de perfil médico.")

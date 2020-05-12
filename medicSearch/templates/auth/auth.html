@@ -22,12 +22,20 @@
                     </div>
                 {% endfor %}
                 <a href="{{link_href}}" class="text-center mt-2 mb-2" style="display: block;">{{link_text}}</a>
+
+                {% if title == 'Login'%}
+                <a href="/recovery" class="text-center mt-2 mb-2" style="display: block;">Esqueci minha senha</a>
+                {% endif %}
+
                 <button type="submit" class="btn btn-primary">{{button_text}}</button>
+
+                {% if title != 'Recuperar senha' and title != 'Alterar senha' %}
                 <p class="text-center mt-2 mb-2" style="display: block;">Ou</p>
                 <div class="social-container">
                     <a class="btn" id="facebook" href="{% url 'social:begin' 'facebook' %}"><i class="fa fa-facebook-f"></i></a>
                     <a class="btn" id="google" href="{% url 'social:begin' 'google-oauth2' %}"><i class="fa fa-google"></i></a>
                 </div>
+                {% endif %}
             </form>
         </div>
     </div>
