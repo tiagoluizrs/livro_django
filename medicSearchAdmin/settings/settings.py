@@ -156,3 +156,6 @@ EMAIL_HOST_PASSWORD = '#Brendha123'
 EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_USE_SSL = False
+
+import django_heroku
+django_heroku.settings(locals())
