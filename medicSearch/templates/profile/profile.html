@@ -17,7 +17,7 @@
                 {% endif %}
 
                 {% if profile.user.id == request.user.id %}
-                <a id="icon-edit" href="/profile/edit"><i class="fa fa-edit"></i></a>
+                <a id="icon-edit" href={% url 'edit-profile' %}><i class="fa fa-edit"></i></a>
                 {% endif %}
                 <ul class="list-group">
                     <li class="list-group-item">Nome: {{profile.user.get_full_name | default:"Sem nome"}}</li>
@@ -27,7 +27,7 @@
                     <li class="list-group-item">Especialidades: {{ profile.specialties.all | join:", " }}</li>
                     {% if profile.role == 2 and request.user.is_authenticated %}
                     <li class="list-group-item">
-                        <a class="btn btn-warning" href="/medic/rating/{{ profile.user.id }}">Avaliar <i class="fa fa-star"></i></a>
+                        <a class="btn btn-warning" href={% url 'rate-medic' profile.user.id %}>Avaliar <i class="fa fa-star"></i></a>
                     </li>
                     {% endif %}
                 </ul>
@@ -54,9 +54,9 @@
                                 <div class="address mb-2">
                                     {{favorite.addresses.first.address | default:"Nenhum endereço." | slice:":15"}}...
                                 </div>
-                                <a href="/profile/{{favorite.id}}" class="btn btn-primary btn-card">Ver médico</a>
+                                <a href="{% url 'profile' favorite.id %}" class="btn btn-primary btn-card">Ver médico</a>
                                 {% if user.is_authenticated %}
-                                <form method="POST" action="/medic/favorite/remove">
+                                <form method="POST" action={% url 'medic-favorite-remove' %}>
                                     {% csrf_token %}
                                     <input type="hidden" value="{{favorite.id}}" name="id">
                                     <input type="hidden" value="{{request.GET.page}}" name="page">

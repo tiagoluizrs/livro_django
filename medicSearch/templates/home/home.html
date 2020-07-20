@@ -7,7 +7,7 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-12 col-md-6 col-lg-6 offset-sm-0 offset-md-3 offset-md-3">
-            <form action="medic/" method="GET">
+            <form action="{% url 'medics' %}" method="GET">
                 <h3 class="text-center">Buscar um médico</h3>
                 <div class="form-row">
                     <div class="col form-group"><input type="text" class="form-control" name="name" placeholder="Buscar por nome"></div>

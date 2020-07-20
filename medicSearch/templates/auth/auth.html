@@ -24,7 +24,7 @@
                 <a href="{{link_href}}" class="text-center mt-2 mb-2" style="display: block;">{{link_text}}</a>
 
                 {% if title == 'Login'%}
-                <a href="/recovery" class="text-center mt-2 mb-2" style="display: block;">Esqueci minha senha</a>
+                <a href={% url 'recovery' %} class="text-center mt-2 mb-2" style="display: block;">Esqueci minha senha</a>
                 {% endif %}
 
                 <button type="submit" class="btn btn-primary">{{button_text}}</button>

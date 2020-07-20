@@ -16,12 +16,12 @@
             <ul class="nav">
                 <li class="nav-item"><a class="nav-link" href="/"><i class="fa fa-home"></i> Home</a></li>
               {% if user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link" href="/profile"><i class="fa fa-user"></i> Perfil</a></li>
-                <li class="nav-item"><a class="nav-link" href="/profile/edit"><i class="fa fa-edit"></i> Editar Perfil</a></li>
-                <li class="nav-item"><a class="nav-link" href="/logout"><i class="fa fa-sign-out"></i> Sair</a></li>
+                <li class="nav-item"><a class="nav-link" href={% url 'profiles' %}><i class="fa fa-user"></i> Perfil</a></li>
+                <li class="nav-item"><a class="nav-link" href={% url 'edit-profile' %}><i class="fa fa-edit"></i> Editar Perfil</a></li>
+                <li class="nav-item"><a class="nav-link" href={% url 'logout' %}><i class="fa fa-sign-out"></i> Sair</a></li>
               {% else %}
-                <li class="nav-item"><a class="nav-link" href="/login"><i class="fa fa-sign-in"></i> Entrar</a></li>
-                <li class="nav-item"><a class="nav-link" href="/register"><i class="fa fa-edit"></i> Registrar</a></li>
+                <li class="nav-item"><a class="nav-link" href={% url 'login' %}><i class="fa fa-sign-in"></i> Entrar</a></li>
+                <li class="nav-item"><a class="nav-link" href={% url 'register' %}><i class="fa fa-edit"></i> Registrar</a></li>
               {% endif %}
             </ul>
         </nav>

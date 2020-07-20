@@ -25,7 +25,7 @@
                         {{ f }}
                     {% endif %}
                 {% endfor %}
-                <a href="/profile/{{ medic.user.id }}" class="text-center mt-2 mb-2" style="display: block;">Voltar para o perfil do médico</a>
+                <a href={% url 'profile' medic.user.id %} class="text-center mt-2 mb-2" style="display: block;">Voltar para o perfil do médico</a>
                 <button type="submit" class="btn btn-primary">Avaliar</button>
             </form>
         </div>
