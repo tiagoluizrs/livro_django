@@ -5,7 +5,7 @@ cffi==1.14.0
 chardet==3.0.4
 colorama==0.4.3
 coverage==5.2
-cryptography==2.9.2
+cryptography==3.2
 decorator==4.4.2
 defusedxml==0.7.0rc1
 dj-database-url==0.5.0
