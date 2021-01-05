@@ -12,7 +12,10 @@ import hashlib
 def login_view(request):
     loginForm = LoginForm()
     message = None
-
+    
+    if request.user.is_authenticated:
+        return redirect('/')
+        
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -46,6 +49,9 @@ def login_view(request):
 def register_view(request):
     registerForm = RegisterForm()
     message = None
+    
+    if request.user.is_authenticated:
+        return redirect('/')
 
     if request.method == 'POST':
         username = request.POST['username']

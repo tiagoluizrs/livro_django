@@ -1,6 +1,4 @@
 from medicSearch.models import *
-from ckeditor.fields import RichTextField
-from ckeditor_uploader.fields import RichTextUploadingField
 
 class Rating(models.Model):
     user = models.ForeignKey(User, related_name='avaliou', on_delete=models.CASCADE)

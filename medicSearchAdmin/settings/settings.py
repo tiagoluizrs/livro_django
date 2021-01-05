@@ -32,7 +32,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'medicSearch',
-    'ckeditor',
     'social_django'
 ]
 
