@@ -3,7 +3,7 @@ from django.db.models import Sum, Count
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    role = models.IntegerField(choices=ROLE_CHOICE, default=3)
+    role = models.IntegerField(choices=ROLE_CHOICE, default=3, null=True, blank=True)
     birthday = models.DateField(default=None, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -35,10 +35,13 @@ class Profile(models.Model):
         from .Rating import Rating
         try:
             ratings = Rating.objects.filter(user_rated=self.user).aggregate(Sum('value'), Count('user'))
-            scoring_average = ratings['value__sum'] / ratings['user__count']
-            return scoring_average
+            if ratings['user__count'] > 0:
+                scoring_average = ratings['value__sum'] / ratings['user__count']
+                scoring_average = round(scoring_average, 2) # Arredondando o valor para duas casas decimais
+                return scoring_average
+            return 'Sem avaliações'
         except:
-            return 0
+            return 'Sem avaliações'
 
     def show_favorites(self):
         ids = [result.id for result in self.favorites.all()]
