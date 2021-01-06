@@ -24,7 +24,10 @@
                     <li class="list-group-item">Usuário: {{profile.user.username | default:"Sem usuário"}}</li>
                     <li class="list-group-item">E-mail: {{profile.user.email | default:"Sem e-mail"}}</li>
                     <li class="list-group-item">Nascimento: {{profile.birthday | date:'d/m/Y' | default:"Sem data"}}</li>
+                    {% if profile.role == 2 %}
+                    <li class="list-group-item">Nota: {{ profile.show_scoring_average }}</li>
                     <li class="list-group-item">Especialidades: {{ profile.specialties.all | join:", " }}</li>
+                    {% endif %}
                     {% if profile.role == 2 and request.user.is_authenticated %}
                     <li class="list-group-item">
                         <a class="btn btn-warning" href={% url 'rate-medic' profile.user.id %}>Avaliar <i class="fa fa-star"></i></a>
@@ -45,7 +48,7 @@
                             <div class="image-circle" style="background-image: url('/media/{{favorite.image}}');"></div>
                             <div class="card-body">
                                 <h5 class="card-title">{{favorite.user.get_full_name}}</h5>
-                                <h6>Média: {{favorite.show_scoring_average}} <i class="fa fa-star"></i></h6>
+                                <h6>Nota: {{favorite.show_scoring_average}} <i class="fa fa-star"></i></h6>
                                 <ul class="specialties">
                                     {% for speciality in favorite.specialties.all %}
                                     <li>{{speciality}}</li>
