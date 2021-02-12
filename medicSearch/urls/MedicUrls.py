@@ -5,5 +5,5 @@ urlpatterns = [
     path("", list_medics_view, name='medics'),
     path("favorite", add_favorite_view, name='medic-favorite'),
     path("favorite/remove", remove_favorite_view, name='medic-favorite-remove'),
-    path("rating/<int:medic_id>", rate_medic, name='rate-medic'),
+    path("rating/<int:medic_id>", rate_medic, name='rate-medic')
 ]

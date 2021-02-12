@@ -1,14 +1,11 @@
 from .settings import *
 
-DEBUG = True
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+ALLOWED_HOSTS = ['127.0.0.1']
 
-# Crie a secret key para seu ambiente de desenvolvimento
-SECRET_KEY = 'ixb62ha#ts=ab4t2u%p1_62-!5w2j==j6d^3-j$!z(@*m+-h'
-
-ALLOWED_HOSTS = ['livro-django.herokuapp.com']
-
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
+# Crie a secret key para seu ambiente de produção
+SECRET_KEY = 'ixb6fha#ts=&b4t2u%p1_62-!8dw2j==j)d^3-j$!z(@*m+-h'
 
 DATABASES = {
     'default': {
@@ -16,4 +13,3 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-

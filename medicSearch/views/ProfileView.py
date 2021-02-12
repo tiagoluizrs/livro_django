@@ -25,6 +25,7 @@ def list_profile_view(request, id=None):
         page = request.GET.get('page')
         ratings = paginator.get_page(page)
 
+
     context = {
         'profile': profile,
         'favorites': favorites,
@@ -36,13 +37,14 @@ def list_profile_view(request, id=None):
 @login_required
 def edit_profile(request):
     profile = get_object_or_404(Profile, user=request.user)
-    message = None
     emailUnused = True
-
+    message = None
+    
     if request.method == 'POST':
-        profileForm = UserProfileForm(request.POST, request.FILES,instance=profile)
+        profileForm = UserProfileForm(request.POST, request.FILES, instance=profile)
         userForm = UserForm(request.POST, instance=request.user)
-        
+
+        # Verifica se o e-mail que o usuário está tentando utilizar em seu perfil já existe em outro perfil
         verifyEmail = Profile.objects.filter(user__email=request.POST['email']).exclude(user__id=request.user.id).first()
         emailUnused = verifyEmail is None
     else:
@@ -56,10 +58,12 @@ def edit_profile(request):
     else:
         if request.method == 'POST':
             if emailUnused:
+                # Se o e-mail não está em uso mas o formulário tiver algum dado inválido.
                 message = { 'type': 'danger', 'text': 'Dados inválidos' }
-            else:   
+            else:  
+                # Se o e-mail que o usuário tentou usar já está em uso por outra pessoa.
                 message = { 'type': 'warning', 'text': 'E-mail já usado por outro usuário' }
-
+    
     context = {
         'profileForm': profileForm,
         'userForm': userForm,

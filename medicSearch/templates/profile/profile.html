@@ -4,9 +4,9 @@
 {% block styles %}<link rel="stylesheet" href="{% static 'css/profile.css' %}">{% endblock %}
 {% block content %}
 <div id="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-12 col-md-2" id="profile-area">
+    <div class="container">
+        <div class="row"> 
+            <div class="col-xs-12 col-md-3" id="profile-area">
                 <div id="image-profile" style="background-image: url('/media/{{profile.image}}');"></div>
                 {% if profile.role == 1 %}
                 <p class="badge badge-primary text-center" id="badge-role"><i class="fa fa-building"></i> Administrador</p>
@@ -17,7 +17,7 @@
                 {% endif %}
 
                 {% if profile.user.id == request.user.id %}
-                <a id="icon-edit" href={% url 'edit-profile' %}><i class="fa fa-edit"></i></a>
+                <a id="icon-edit" href="#"><i class="fa fa-edit"></i></a>
                 {% endif %}
                 <ul class="list-group">
                     <li class="list-group-item">Nome: {{profile.user.get_full_name | default:"Sem nome"}}</li>
@@ -36,14 +36,14 @@
                 </ul>
             </div>
             {% if profile.role == 1 or profile.role == 3 %}
-            <div class="col-xs-12 col-md-10" id="favorites-area">
+            <div class="col-xs-12 col-md-9" id="favorites-area">
                 <div class="alert alert-info">Total de favoritos: {{favorites | length}}</div>
                 {% if request.GET.msg %}
                 <div class="alert alert-{{request.GET.type}}">{{ request.GET.msg }}</div>
                 {% endif %}
                 <div class="row">
                     {% for favorite in favorites %}
-                    <div class="col-xs-12 col-md-3 col-lg-3">
+                    <div class="col-xs-12 col-md-4 col-lg-4">
                         <div class="card mb-4">
                             <div class="image-circle" style="background-image: url('/media/{{favorite.image}}');"></div>
                             <div class="card-body">
@@ -57,7 +57,7 @@
                                 <div class="address mb-2">
                                     {{favorite.addresses.first.address | default:"Nenhum endereço." | slice:":15"}}...
                                 </div>
-                                <a href="{% url 'profile' favorite.id %}" class="btn btn-primary btn-card">Ver médico</a>
+                                <a href={% url 'profile' favorite.id %} class="btn btn-primary btn-card">Ver médico</a>
                                 {% if user.is_authenticated %}
                                 <form method="POST" action={% url 'medic-favorite-remove' %}>
                                     {% csrf_token %}
@@ -88,13 +88,13 @@
                 </div>
             </div>
             {% else %}
-            <div class="col-xs-12 col-md-4" id="addresses-area">
+            <div class="col-xs-12 col-md-3" id="addresses-area">
                 <div class="alert alert-info">Total de endereços: {{profile.addresses.all | length}}</div>
                 <div class="row">
                     {% for address in profile.addresses.all %}
                     <div class="col-xs-12 col-md-12">
                         <div class="card mb-3">
-                          <div class="card-body">
+                            <div class="card-body">
                             <h5 class="card-title">{{address.address}}, {{address.neighborhood.name}}, {{address.neighborhood.city}}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">Telefones: {{address.phone}}</h6>
                             <ul id="days">
@@ -106,7 +106,7 @@
                             {% if profile.user.id == request.user.id %}
                             <a href="/address/{{address.id}}" class="btn btn-primary"><i class="fa fa-edit"></i></a>
                             {% endif %}
-                          </div>
+                            </div>
                         </div>
                     </div>
                     {% endfor %}
@@ -117,32 +117,32 @@
                 <div class="row mb-4">
                     <div class="col-xs-12 col-md-12">
                         <ul class="list-group">
-                          {% for rating in ratings %}
+                            {% for rating in ratings %}
                             <li href="#" class="list-group-item list-group-item-action">
                                 <div class="content d-flex justify-content-between">
-                                  <h5 class="mb-1">{{rating.user.get_full_name}}</h5>
-                                  <small>{{rating.created_at}}</small>
+                                    <h5 class="mb-1">{{rating.user.get_full_name}}</h5>
+                                    <small>{{rating.created_at}}</small>
                                 </div>
                                 {{rating.opinion}}
                                 <small>{{rating.value}}</small>
-                              </li>
+                                </li>
                             {% endfor %}
                         </ul>
                     </div>
                 </div>
                 <div class="row">
                     <nav aria-label="Page navigation" class="navigation">
-                      <ul class="pagination">
+                        <ul class="pagination">
                         {% if ratings.has_previous %}
-                          <li class="page-item"><a class="page-link" href="?page=1">&laquo; Primeiro</a></li>
+                            <li class="page-item"><a class="page-link" href="?page=1">&laquo; Primeiro</a></li>
                             <li class="page-item"><a class="page-link" href="?page={{ ratings.previous_page_number }}">Anterior</a></li>
                         {% endif %}
-                          <li class="page-item"><a class="page-link" href="#">Página {{ ratings.number }} de {{ ratings.paginator.num_pages }}.</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Página {{ ratings.number }} de {{ ratings.paginator.num_pages }}.</a></li>
                         {% if ratings.has_next %}
                             <li class="page-item"><a class="page-link" href="?page={{ ratings.next_page_number }}">Próximo</a></li>
                             <li class="page-item"><a class="page-link" href="?page={{ ratings.paginator.num_pages }}">Último &raquo;</a></li>
                         {% endif %}
-                      </ul>
+                        </ul>
                     </nav>
                 </div>
             </div>

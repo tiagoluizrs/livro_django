@@ -14,4 +14,3 @@ class RecoveryForm(forms.Form):
 
 class ChangePasswordForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
-

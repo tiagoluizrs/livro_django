@@ -21,12 +21,14 @@
                         {% endfor %}
                     </div>
                 {% endfor %}
-                <a href="{{link_href}}" class="text-center mt-2 mb-2" style="display: block;">{{link_text}}</a>
-
+                <a href="{{link_href}}" style="
+                    display: block;
+                    text-align: center;
+                    margin-bottom: 20px;
+                ">{{link_text}}</a>
                 {% if title == 'Login'%}
                 <a href={% url 'recovery' %} class="text-center mt-2 mb-2" style="display: block;">Esqueci minha senha</a>
                 {% endif %}
-
                 <button type="submit" class="btn btn-primary">{{button_text}}</button>
 
                 {% if title != 'Recuperar senha' and title != 'Alterar senha' %}

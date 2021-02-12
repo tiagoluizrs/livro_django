@@ -13,18 +13,18 @@ def list_medics_view(request):
     state = request.GET.get("state")
 
     medics = Profile.objects.filter(role=2)
-    if name is not None:
-        medics = medics.filter(Q(user__first_name__contains=name) | Q(user__username__contains=name))
+    if name is not None and name != '':
+        medics = medics.filter(user__first_name__contains=name)
     if speciality is not None:
         medics = medics.filter(specialties__id=speciality)
 
     if neighborhood is not None:
-        medics = medics.filter(addresses__neighborhood__id=neighborhood)
+        medics = medics.filter(addresses__neighborhood=neighborhood)
     else:
         if city is not None:
-            medics = medics.filter(addresses__neighborhood__city__id=city)
+            medics = medics.filter(addresses__neighborhood__city=city)
         elif state is not None:
-            medics = medics.filter(addresses__neighborhood__city__state__id=state)
+            medics = medics.filter(addresses__neighborhood__city__state=state)
 
     if len(medics) > 0:
         paginator = Paginator(medics, 8)
@@ -38,7 +38,7 @@ def list_medics_view(request):
         'medics': medics,
         'parameters': parameters
     }
-
+    # Altere `HttpResponse` e adicione `render` no lugar igual ao código a seguir:
     return render(request, template_name='medic/medics.html', context=context, status=200)
 
 def add_favorite_view(request):
@@ -55,11 +55,11 @@ def add_favorite_view(request):
         medic = Profile.objects.filter(user__id=id).first()
         profile.favorites.add(medic.user)
         profile.save()
-        msg = "Favorito adicionado com sucesso."
+        msg = "Favorito adicionado com sucesso"
         _type = "success"
     except Exception as e:
         print("Erro %s" % e)
-        msg = "Um erro ocorreu ao salvar o médico nos favoritos."
+        msg = "Um erro ocorreu ao salvar o médico nos favoritos"
         _type = "danger"
 
     if page:

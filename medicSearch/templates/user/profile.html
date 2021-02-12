@@ -13,7 +13,7 @@
                 <div class="row">
                     {% csrf_token %}
                     {% for f in userForm %}
-                        {% if not f.is_hidden %}
+                    {% if not f.is_hidden %}
                         <div class="form-group col-md-6">
                             {{ f.label }}
                             {{ f }}

@@ -3,16 +3,16 @@ from django.db.models import Sum, Count
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    role = models.IntegerField(choices=ROLE_CHOICE, default=3, null=True, blank=True)
+    role = models.IntegerField(choices=ROLE_CHOICE, default=3)
     birthday = models.DateField(default=None, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    token = models.CharField(max_length=256, null=True, blank=True)
+    token = models.CharField(max_length=255, null=True, blank=True)
     image = models.ImageField(null=True, blank=True)
-    favorites = models.ManyToManyField(User, null=True, blank=True, related_name='favorites', verbose_name='Favoritos', help_text="Este campo é destinado aos usuários de perfil paciente.")
-    specialties = models.ManyToManyField(Speciality, null=True, blank=True, related_name='specialties', verbose_name='Especialidades', help_text="Este campo é destinado aos usuários de perfil médico.")
-    addresses = models.ManyToManyField(Address, null=True, blank=True, related_name='addresses', verbose_name='Endereços', help_text="Este campo é destinado aos usuários de perfil médico.")
-
+    favorites = models.ManyToManyField(User, blank=True, related_name='favorites')
+    specialties = models.ManyToManyField(Speciality, blank=True, related_name='specialties')
+    addresses = models.ManyToManyField(Address, blank=True, related_name='addresses')
+    
     def __str__(self):
         return '{}'.format(self.user.username)
 
