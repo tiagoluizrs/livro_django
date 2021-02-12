@@ -132,8 +132,8 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-SOCIAL_AUTH_FACEBOOK_KEY = ''
-SOCIAL_AUTH_FACEBOOK_SECRET = ''
+SOCIAL_AUTH_FACEBOOK_KEY = "549047992678628"
+SOCIAL_AUTH_FACEBOOK_SECRET = "9841b1510b74d82edf2355b987a3e08c"
 
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', 'user_link'] # add this
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {       # add this
@@ -146,13 +146,16 @@ SOCIAL_AUTH_FACEBOOK_EXTRA_DATA = [                 # add this
     ('link', 'profile_url'),
 ]
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ''
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '588024358177-5erdb5qnk57mckdogigchsl29mjho6qo.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '4QQGw5L9Thlk0o5fwBWvshDs'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'email@gmail.com'
-EMAIL_HOST_PASSWORD = 'senha email'
+EMAIL_HOST_USER = 'tiagoluizribeirodasilva@gmail.com'
+EMAIL_HOST_PASSWORD = '#Brendhas3v3n'
 EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_USE_SSL = False
+
+import django_heroku
+django_heroku.settings(locals())

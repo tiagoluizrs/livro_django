@@ -1,3 +1,5 @@
-venv
-.idea
-htmlcov
+*.log
+*.pot
+*.pyc
+__pycache__/
+venv/
