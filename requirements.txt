@@ -32,6 +32,6 @@ six==1.15.0
 social-auth-app-django==4.0.0
 social-auth-core==4.0.3
 sqlparse==0.4.1
-urllib3==1.26.3
+urllib3==1.26.4
 wcwidth==0.2.5
 whitenoise==5.2.0
