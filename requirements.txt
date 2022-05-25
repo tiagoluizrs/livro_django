@@ -23,7 +23,7 @@ prompt-toolkit==3.0.14
 psycopg2==2.8.6
 pycparser==2.20
 Pygments==2.7.4
-PyJWT==2.0.1
+PyJWT==2.4.0
 python3-openid==3.2.0
 pytz==2020.5
 requests==2.25.1
